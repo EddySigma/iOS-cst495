@@ -10,7 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    // I have added a change here...
-
+    @IBOutlet weak var display: UILabel!
+    
+    @IBAction func appendDigit(sender: UIButton) {
+        // declare a local var
+        let digit = sender.currentTitle
+        print("digit = \(digit)")
+    }
 }
-

@@ -12,9 +12,23 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var display: UILabel!
     
+    var userIsInTheMiddleOfTypingNumber = false
+    
     @IBAction func appendDigit(sender: UIButton) {
         // declare a local var
-        let digit = sender.currentTitle
-        print("digit = \(digit)")
+        let digit = sender.currentTitle!
+        if userIsInTheMiddleOfTypingNumber {
+            display.text = display.text! + digit
+        } else {
+            display.text = digit
+            userIsInTheMiddleOfTypingNumber = true
+        }
+    }
+    
+    // internal stack that contains the numbers
+    var operandStack = Array<Double>()
+    @IBAction func enter() {
+        userIsInTheMiddleOfTypingNumber = false
+        operandStack.append(newElement: T)
     }
 }

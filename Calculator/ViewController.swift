@@ -25,10 +25,43 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func operate(sender: UIButton) {
+        let operation = sender.currentTitle!
+        if userIsInTheMiddleOfTypingNumber {
+            enter()
+        }
+        
+        switch operation {
+            case "×":
+                if operandStack.count >= 2 {
+                    displayValue = operandStack.removeLast() * operandStack.removeLast()
+                    enter()
+                }
+            
+//            case "÷":
+//            case "+":
+//            case "−":
+            default: break
+        }
+    }
+    
     // internal stack that contains the numbers
     var operandStack = Array<Double>()
     @IBAction func enter() {
         userIsInTheMiddleOfTypingNumber = false
-        operandStack.append(newElement: T)
+        operandStack.append(displayValue)
+        print("operandStack = \(operandStack)")
+    }
+    
+    // computed property example
+    var displayValue: Double {
+        get {
+            // figure out what goes here
+            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+        }
+        set {
+            display.text = "\(newValue)"
+            userIsInTheMiddleOfTypingNumber = false
+        }
     }
 }

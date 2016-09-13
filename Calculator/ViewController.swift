@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     var userIsInTheMiddleOfTypingNumber = false
     var usingRadixPoint = false
     
-    @IBAction func appendDigit(sender: UIButton) {
+    @IBAction func appendDigit(_ sender: UIButton) {
         // declare a local var
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingNumber {
@@ -41,7 +41,7 @@ class ViewController: UIViewController {
         usingRadixPoint = true
     }
         
-    @IBAction func operate(sender: UIButton) {
+    @IBAction func operate(_ sender: UIButton) {
         let operation = sender.currentTitle!
         if userIsInTheMiddleOfTypingNumber {
             enter()
@@ -71,14 +71,14 @@ class ViewController: UIViewController {
         }
     }
     
-    func performOperation (operation: (Double, Double) -> Double) {
+    func performOperation (_ operation: (Double, Double) -> Double) {
         if operandStack.count >= 2 {
             displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
             enter()
         }
     }
     
-    private func performOperation (operation: Double -> Double) {
+    fileprivate func performOperation (_ operation: (Double) -> Double) {
         if operandStack.count >= 1 {
             displayValue = operation(operandStack.removeLast())
             enter()
@@ -100,7 +100,7 @@ class ViewController: UIViewController {
     var displayValue: Double {
         get {
             // figure out what goes here
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            return NumberFormatter().number(from: display.text!)!.doubleValue
         }
         set {
             display.text = "\(newValue)"

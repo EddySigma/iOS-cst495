@@ -47,7 +47,7 @@ class ViewController: UIViewController {
             enter()
         }
         if let operation = sender.currentTitle {
-            if let result = brain.performOperation(operation) {
+            if let result = brain.performOperation(symbol: operation) {
                 displayValue = result
             } else {
                 displayValue = 0 // you want to give the capacity of taking nils. For hw
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
     
     @IBAction func enter() {
         userIsInTheMiddleOfTypingNumber = false
-        if let result = brain.pushOperand(displayValue) {
+        if let result = brain.pushOperand(operand: displayValue) {
             displayValue = result
         } else {
             displayValue = 0
@@ -88,7 +88,7 @@ class ViewController: UIViewController {
     var displayValue: Double {
         get {
             // figure out what goes here
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            return NumberFormatter().number(from: display.text!)!.doubleValue
         }
         set {
             display.text = "\(newValue)"

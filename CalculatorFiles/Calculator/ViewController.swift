@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     var brain = CalculatorBrain()
     var usingRadixPoint = false
     
-    @IBAction func appendDigit(sender: UIButton) {
+    @IBAction func appendDigit(_ sender: UIButton) {
         // declare a local var
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingNumber {
@@ -42,23 +42,23 @@ class ViewController: UIViewController {
         usingRadixPoint = true
     }
         
-    @IBAction func operate(sender: UIButton) {
+    @IBAction func operate(_ sender: UIButton) {
+        //let operation = sender.currentTitle!
         if userIsInTheMiddleOfTypingNumber {
             enter()
         }
-        if let operation = sender.currentTitle {
+        
+        if let operation = sender.currentTitle{
             if let result = brain.performOperation(symbol: operation) {
                 displayValue = result
             } else {
-                displayValue = 0 // you want to give the capacity of taking nils. For hw
+                displayValue = 0 // you want the capacity to take nils
             }
         }
-        
     }
     
-    // pi and radix most be updated to acomodate the new calculatorBrain
-    /*
     @IBAction func pi() {
+        /*
         if display.text == "0" {
             display.text = "\(M_PI)"
             enter()
@@ -67,21 +67,36 @@ class ViewController: UIViewController {
             enter()
             operandStack.append(M_PI)
             performOperation { $0 * $1 }
+        }*/
+    }
+    /*
+    func performOperation (_ operation: (Double, Double) -> Double) {
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    fileprivate func performOperation (_ operation: (Double) -> Double) {
+        if operandStack.count >= 1 {
+            displayValue = operation(operandStack.removeLast())
+            enter()
         }
     }*/
     
+    // the stack has been moved to calculator brain
+    
     @IBAction func enter() {
         userIsInTheMiddleOfTypingNumber = false
+        /*if usingRadixPoint {
+            usingRadixPoint = false
+        }
+        print("operandStack = \(operandStack)")*/
         if let result = brain.pushOperand(operand: displayValue) {
             displayValue = result
         } else {
             displayValue = 0
         }
-        
-        /* previous message applies here too
-        if usingRadixPoint {
-            usingRadixPoint = false
-        }*/
     }
     
     // computed property example

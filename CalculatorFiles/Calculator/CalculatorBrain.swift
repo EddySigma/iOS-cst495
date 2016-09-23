@@ -32,7 +32,7 @@ class CalculatorBrain
     }
     
     // the evaluate functions are used recursively where depending on the value of the
-    // item in the stack they may look at one item or the entire stack to complete the 
+    // item in the stack they may look at one item or the entire stack to complete the
     // the calculations or return an error or a message if it is not possible to return
     // something
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op])

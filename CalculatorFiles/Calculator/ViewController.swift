@@ -11,7 +11,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var display: UILabel?
     
     var userIsInTheMiddleOfTypingNumber = false
     var brain = CalculatorBrain()
@@ -21,25 +21,21 @@ class ViewController: UIViewController {
         // declare a local var
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingNumber {
-            display.text = display.text! + digit
+            display?.text = (display?.text!)! + digit
         } else {
-            display.text = digit
-            userIsInTheMiddleOfTypingNumber = true
+            if digit != "\(0)" {
+                display?.text = digit
+                userIsInTheMiddleOfTypingNumber = true
+            }
         }
     }
     
     @IBAction func radixPoint() {
-        if userIsInTheMiddleOfTypingNumber {
-            if !usingRadixPoint {
-                display.text = display.text! + "."
-            }
-        } else {
-            if !usingRadixPoint{
-                display.text = "0."
-            }
+        if !usingRadixPoint {
+            display?.text = (display?.text!)! + "."
+            usingRadixPoint = true
             userIsInTheMiddleOfTypingNumber = true
         }
-        usingRadixPoint = true
     }
         
     @IBAction func operate(_ sender: UIButton) {
@@ -52,61 +48,55 @@ class ViewController: UIViewController {
             if let result = brain.performOperation(symbol: operation) {
                 displayValue = result
             } else {
-                displayValue = 0 // you want the capacity to take nils
+                displayValue = nil // you want the capacity to take nils -> done!!!
             }
         }
     }
     
     @IBAction func pi() {
-        /*
-        if display.text == "0" {
-            display.text = "\(M_PI)"
+        if !userIsInTheMiddleOfTypingNumber {
+            display?.text = "\(M_PI)"
             enter()
         }
         else {
             enter()
-            operandStack.append(M_PI)
-            performOperation { $0 * $1 }
-        }*/
-    }
-    /*
-    func performOperation (_ operation: (Double, Double) -> Double) {
-        if operandStack.count >= 2 {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            display?.text = "\(M_PI)"
             enter()
+            userIsInTheMiddleOfTypingNumber = false
         }
     }
     
-    fileprivate func performOperation (_ operation: (Double) -> Double) {
-        if operandStack.count >= 1 {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-        }
-    }*/
+    @IBAction func clear() {
+        // call brain.wash()
+        display?.text = "\(0)"
+        userIsInTheMiddleOfTypingNumber = false
+        usingRadixPoint = false
+    }
     
     // the stack has been moved to calculator brain
     
     @IBAction func enter() {
         userIsInTheMiddleOfTypingNumber = false
-        /*if usingRadixPoint {
-            usingRadixPoint = false
-        }
-        print("operandStack = \(operandStack)")*/
-        if let result = brain.pushOperand(operand: displayValue) {
+        if let result = brain.pushOperand(operand: displayValue!) {
             displayValue = result
         } else {
-            displayValue = 0
+            displayValue = nil
         }
     }
     
     // computed property example
-    var displayValue: Double {
+    var displayValue: Double? {
         get {
             // figure out what goes here
-            return NumberFormatter().number(from: display.text!)!.doubleValue
+            return NumberFormatter().number(from: (display?.text!)!)!.doubleValue
         }
         set {
-            display.text = "\(newValue)"
+            if newValue != nil {
+                display?.text = "\(newValue!)"
+            } else {
+                display?.text = "---Error---"
+            }
+            
             userIsInTheMiddleOfTypingNumber = false
         }
     }

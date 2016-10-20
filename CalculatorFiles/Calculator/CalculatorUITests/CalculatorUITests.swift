@@ -2,8 +2,8 @@
 //  CalculatorUITests.swift
 //  CalculatorUITests
 //
-//  Created by Juan Garcia on 9/2/16.
-//  Copyright © 2016 Juan Garcia. All rights reserved.
+//  Created by Juan Eduardo Garcia on 10/15/16.
+//  Copyright © 2016 Juan Eduardo Garcia. All rights reserved.
 //
 
 import XCTest

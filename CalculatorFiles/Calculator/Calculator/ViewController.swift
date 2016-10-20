@@ -23,6 +23,9 @@ class ViewController: UIViewController {
     //      initialized
     var userIsInTheMiddleOfTypingANumber : Bool = false
     
+    // new instance needed for the CalculatorBrain
+    var brain = CalculatorBrain() // common -> arrow that connects controller to model
+    
     @IBAction func appendDigit(sender: UIButton) {
         //local variable
         // let = constant
@@ -44,8 +47,8 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
+    @IBAction func operate(sender: UIButton) { // * / + - etc. buttons
+        // let operation = sender.currentTitle! -> moved bellow the following if statement
         
         if userIsInTheMiddleOfTypingANumber {
             enter()
@@ -53,45 +56,57 @@ class ViewController: UIViewController {
             // this is meant so that when the user enters one of the operands there will not be a need to 
             // enter the enter button. This will make things easier for the user
         }
+        // replacement code
         
-        // for swtiches you need to cover every possible outcome
-        switch operation {
-            // multiplication
-        case "×": performOperation { $0 * $1 }
-            
-            // division
-        case "÷": performOperation { $1 / $0 }
-            // addition
-        case "+": performOperation { $0 + $1 }
-            // subtraction
-        case "−": performOperation { $1 - $0 }
-        case "√": performOperation { sqrt($0) }
-            
-        default: break
+        if let operation = sender.currentTitle {
+            if let result = brain.performOperation(operation) {
+                displayValue = result
+            } else {
+                displayValue = 0 // needs to be changed to something more informative
+            }
         }
+            //     This section has been replaced by the code in CalculatorBrain <<<<<<<<<<<<<<<<
+            //
+            //        // for swtiches you need to cover every possible outcome
+            //        switch operation {
+            //            // multiplication
+            //        case "×": performOperation { $0 * $1 }
+            //            
+            //            // division
+            //        case "÷": performOperation { $1 / $0 }
+            //            // addition
+            //        case "+": performOperation { $0 + $1 }
+            //            // subtraction
+            //        case "−": performOperation { $1 - $0 }
+            //        case "√": performOperation { sqrt($0) }
+            //            
+            //        default: break
+            //        }
     }
     
-    // the following function will takes an operation that takes two doubles and returns one
-    // operation has a type as defined by us that is two doubles that return a double
-    private func performOperation(operation: (Double, Double) -> Double) {
-        // the if statement is meant as protection in case there are not enough
-        // values in the array to complete the calculation
-        if operandStack.count >= 2 {
-            
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            // the reason for the enter is the same as in operate we want to make things easy
-            // for the user. So we want them to press a operation button tha will result in a outcome
-            // and subsequent presses will do the same without the need of more actions by the user
-            enter()
-        }
-    }
-    
-    func performOperation (operation: Double -> Double) {
-        if operandStack.count >= 1 {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-        }
-    }
+            // This section has been replaced by the code in CalculatorBrain <<<<<<<<<<<<<<<<
+            //
+            //    // the following function will takes an operation that takes two doubles and returns one
+            //    // operation has a type as defined by us that is two doubles that return a double
+            //    private func performOperation(operation: (Double, Double) -> Double) {
+            //        // the if statement is meant as protection in case there are not enough
+            //        // values in the array to complete the calculation
+            //        if operandStack.count >= 2 {
+            //            
+            //            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            //            // the reason for the enter is the same as in operate we want to make things easy
+            //            // for the user. So we want them to press a operation button tha will result in a outcome
+            //            // and subsequent presses will do the same without the need of more actions by the user
+            //            enter()
+            //        }
+            //    }
+            //    
+            //    func performOperation (operation: Double -> Double) {
+            //        if operandStack.count >= 1 {
+            //            displayValue = operation(operandStack.removeLast())
+            //            enter()
+            //        }
+            //    }
     
     // internal stack that contains the numbers
     //var operandStack: Array<Double> = Array<Double>() // empty array
@@ -102,8 +117,17 @@ class ViewController: UIViewController {
         // add numbers to the internal stack
         
         userIsInTheMiddleOfTypingANumber = false;
-        operandStack.append(displayValue)
-        print("operandStack = \(operandStack)")
+        // replacement of the old code
+        if let result = brain.pushOperand(displayValue) { // when operand is pushed the result will be calculated (can be ignored)
+            displayValue = result // if result is not nil then the display value will be set to result.
+        } else { // if result is actually nil
+            // if display value took an optional here then something could happen...
+            displayValue = 0 // best that can be done right now ... until you fix it.
+        }
+            // This section has been replaced by the code above <<<<<<<<<<<<<<<<
+            //
+            //        operandStack.append(displayValue)
+            //        print("operandStack = \(operandStack)")
     }
     
     // computed properties
@@ -112,7 +136,6 @@ class ViewController: UIViewController {
         // the value that corresponds to the variable is calculated before it is set.
         get {
             // here we compute the value
-            print(display.text!)
             return (NSNumberFormatter().numberFromString(display.text! as String)!.doubleValue)
         }
         set {

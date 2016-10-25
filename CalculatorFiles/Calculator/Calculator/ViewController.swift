@@ -5,39 +5,23 @@
 //  Created by Juan Eduardo Garcia on 10/15/16.
 //  Copyright © 2016 Juan Eduardo Garcia. All rights reserved.
 //
-//      Note: this is a remake of the original program. This is because the previous version
-//          was updated using Xcode 8 this caused some problems in the code and may cause more
-//          of them in the future.
+
 
 import UIKit
 import Foundation
 
 class ViewController: UIViewController {
     
-    // why is the following not initialized??? -> because it is an optional and
-    //      they are always initialized to nil
     @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var equation: UILabel!
     
-    // in the following var there is an error because it is not initialized.
-    //      in swift all properties have to be initialized when the object is
-    //      initialized
     var userIsInTheMiddleOfTypingANumber : Bool = false
     
-    // new instance needed for the CalculatorBrain
-    var brain = CalculatorBrain() // common -> arrow that connects controller to model
+    var brain = CalculatorBrain()
     
     @IBAction func appendDigit(sender: UIButton) {
-        //local variable
-        // let = constant
         
-        // currentTitle gets the title of the button
         let digit = sender.currentTitle!
-        // digit is an optional string this means that it is an optional that can be a string
-        //   not the other way around (because .currentTitle returns an optional string)
-        // printing >>>> print("digit = \(digit)")
-        
-        // optionals >>>> ? -> unwrap for now, ! -> automaticaly unwrap (implicitely unwraped optional)
-        // program will crash if the optional is set to nil
         
         if userIsInTheMiddleOfTypingANumber {
             display.text = display.text! + digit
@@ -47,104 +31,100 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func operate(sender: UIButton) { // * / + - etc. buttons
-        // let operation = sender.currentTitle! -> moved bellow the following if statement
+    @IBAction func pi(sender: AnyObject) {
+        // user is in the middle of typing a number
+        // not in the middle of typing a number
+        print ("hello: pi not finished")
+    }
+    
+    @IBAction func addDot() {
+        let dot: Character = "."
+        if !display.text!.characters.contains(dot) {
+            display.text = display.text! + "."
+        }
+    }
+    
+    @IBAction func changePolarity() {
+        if (display.text! as NSString).doubleValue > 0{
+            display.text = "-" + display.text!
+        } else if (display.text! as NSString).doubleValue < 0 {
+            display.text = String(display.text!.characters.dropFirst())
+        }
+    }
+    
+    @IBAction func operate(sender: UIButton) {
         
         if userIsInTheMiddleOfTypingANumber {
             enter()
-            
-            // this is meant so that when the user enters one of the operands there will not be a need to 
-            // enter the enter button. This will make things easier for the user
         }
-        // replacement code
         
         if let operation = sender.currentTitle {
             if let result = brain.performOperation(operation) {
                 displayValue = result
             } else {
-                displayValue = 0 // needs to be changed to something more informative
+                clear()
+                displayValue = nil
             }
         }
-            //     This section has been replaced by the code in CalculatorBrain <<<<<<<<<<<<<<<<
-            //
-            //        // for swtiches you need to cover every possible outcome
-            //        switch operation {
-            //            // multiplication
-            //        case "×": performOperation { $0 * $1 }
-            //            
-            //            // division
-            //        case "÷": performOperation { $1 / $0 }
-            //            // addition
-            //        case "+": performOperation { $0 + $1 }
-            //            // subtraction
-            //        case "−": performOperation { $1 - $0 }
-            //        case "√": performOperation { sqrt($0) }
-            //            
-            //        default: break
-            //        }
     }
+
+    //var operandStack = Array<Double>()
     
-            // This section has been replaced by the code in CalculatorBrain <<<<<<<<<<<<<<<<
-            //
-            //    // the following function will takes an operation that takes two doubles and returns one
-            //    // operation has a type as defined by us that is two doubles that return a double
-            //    private func performOperation(operation: (Double, Double) -> Double) {
-            //        // the if statement is meant as protection in case there are not enough
-            //        // values in the array to complete the calculation
-            //        if operandStack.count >= 2 {
-            //            
-            //            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            //            // the reason for the enter is the same as in operate we want to make things easy
-            //            // for the user. So we want them to press a operation button tha will result in a outcome
-            //            // and subsequent presses will do the same without the need of more actions by the user
-            //            enter()
-            //        }
-            //    }
-            //    
-            //    func performOperation (operation: Double -> Double) {
-            //        if operandStack.count >= 1 {
-            //            displayValue = operation(operandStack.removeLast())
-            //            enter()
-            //        }
-            //    }
     
-    // internal stack that contains the numbers
-    //var operandStack: Array<Double> = Array<Double>() // empty array
-    var operandStack = Array<Double>() // infered version
-    
+    @IBAction func clear() {
+        display.text = "0"
+        brain.clearStack()
+        brain.clearVariables()
+        equation.text = " "
+    }
     
     @IBAction func enter() {
-        // add numbers to the internal stack
-        
+        print(userIsInTheMiddleOfTypingANumber)
+        equation.text = equationDisplay
         userIsInTheMiddleOfTypingANumber = false;
-        // replacement of the old code
-        if let result = brain.pushOperand(displayValue) { // when operand is pushed the result will be calculated (can be ignored)
-            displayValue = result // if result is not nil then the display value will be set to result.
-        } else { // if result is actually nil
-            // if display value took an optional here then something could happen...
-            displayValue = 0 // best that can be done right now ... until you fix it.
+        if let result = brain.pushOperand(displayValue!) {
+            displayValue = result
         }
-            // This section has been replaced by the code above <<<<<<<<<<<<<<<<
-            //
-            //        operandStack.append(displayValue)
-            //        print("operandStack = \(operandStack)")
     }
     
-    // computed properties
-    var displayValue: Double {
-        // instead of initializing this variable to an actual value we can make it so that
-        // the value that corresponds to the variable is calculated before it is set.
+    @IBAction func backspace() {
+        // func 1: delete a number from display
+        if display.text!.characters.count > 1 {
+            if display.text! == "nil" {
+                display.text = "00" // why is 00 needed to display a single 0
+            }
+            display.text = display.text!.substringToIndex(display.text!.endIndex.predecessor())
+        }// func 2: undo a change (aka. remove item from stack)
+        else {
+            // set the display to 0
+            display.text = "0"
+            // check the length of items in the opStack in the brain...
+            // remove a item if count >0 else do nothing
+        }
+    }
+    
+    
+    var displayValue: Double! {
         get {
-            // here we compute the value
-            return (NSNumberFormatter().numberFromString(display.text! as String)!.doubleValue)
+            return ( NSNumberFormatter().numberFromString(display.text! as String)!.doubleValue )
         }
         set {
-            // code that takes the value the variable was set to and actualy sets it? -it was not clear...
-            
-            // whenever the value of displayValue is set newValue will be set to such... (magic?)
             display.text = "\(newValue)"
             userIsInTheMiddleOfTypingANumber = false
-            // this is set false because if the value in displayValue is set we no longer need to display it
+        }
+    }
+    
+//    @IBAction func pushVariable() {
+//        print("hello: pushVariable not finished")
+//    }
+//    
+//    @IBAction func inputVariable() {
+//        print("hello: inputVariable not finished")
+//    }
+    
+    var equationDisplay: String {
+        get {
+            return "\(brain)"
         }
     }
 }

@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "266378530DF6A0B30D2F8D54A052F8F5091DEE1E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "24A97733DD506A05FB243F9404AC5ABB081198B2" : 0,
+    "266378530DF6A0B30D2F8D54A052F8F5091DEE1E" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "874579C0-6CDF-4548-969C-3FA6229707DF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "24A97733DD506A05FB243F9404AC5ABB081198B2" : "",
+    "266378530DF6A0B30D2F8D54A052F8F5091DEE1E" : "CalculatorFiles\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Calculator",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Calculator\/Calculator.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/EddySigma\/iOS-cst495.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "24A97733DD506A05FB243F9404AC5ABB081198B2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/EddySigma\/calculator4iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "266378530DF6A0B30D2F8D54A052F8F5091DEE1E"
+    }
+  ]
+}

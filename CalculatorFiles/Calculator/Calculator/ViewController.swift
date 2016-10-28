@@ -37,6 +37,8 @@ class ViewController: UIViewController {
     @IBAction func clear() {
         // stack should be emptied
         operandStack.removeAll()
+        // userActionStack should be empty
+        userActionStack.removeAll()
         // display should be zero
         display.text = "0"
         // userInput should be empty
@@ -56,8 +58,9 @@ class ViewController: UIViewController {
         
         if userIsInTheMiddleOfTypingANumber {
             enter()
-            
         }
+        
+        userActionStack.append(operation)
         
         // for swtiches you need to cover every possible outcome
         switch operation {
@@ -104,13 +107,16 @@ class ViewController: UIViewController {
     }
     
     var operandStack = Array<Double>()
+    var userActionStack = Array<String>()
     
     
     @IBAction func enter() {
         // add numbers to the internal stack
         
         userIsInTheMiddleOfTypingANumber = false;
+        userActionStack.append("\(displayValue)")
         operandStack.append(displayValue)
+        userInput.text = userInputs
         print("operandStack = \(operandStack)")
     }
     
@@ -129,9 +135,13 @@ class ViewController: UIViewController {
         }
     }
     
-    var userInputs: String { // not working yet
+//    func convertDoubleArrayToStrings (initialAr: Array<Double>) -> Array<String>  {
+//        return initialAr.flatMap{ String($0) }
+//    }
+    
+    var userInputs: String {
         get {
-            return "\(operandStack)"
+            return userActionStack.joinWithSeparator(", ")
         }
         set {
             userInput.text = "\(newValue)"
